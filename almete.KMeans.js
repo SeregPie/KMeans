@@ -64,9 +64,8 @@
 		if (vectorsCount === 0) {
 			return undefined;
 		}
-		return vectors[0].map((_, j) => {
-			let sum = 0;
-			for (let i = vectorsCount; i--;) {
+		return vectors[0].map((sum, j) => {
+			for (let i = vectorsCount; i-- > 1;) {
 				sum += vectors[i][j];
 			}
 			return sum / vectorsCount;

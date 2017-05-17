@@ -9,24 +9,16 @@
 
 	let _sampleSize = function(array, n) {
 		array = array.slice();
-		let arraySize = array.length;
-		n = Math.min(n, arraySize);
+		let length = array.length;
+		n = Math.min(n, length);
 		let randomValues = [];
 		while (n--) {
-			let randomIndex = Math.floor(Math.random()*arraySize);
+			let randomIndex = Math.floor(Math.random()*length);
 			let randomValue = array.splice(randomIndex, 1)[0];
-			arraySize--;
+			length--;
 			randomValues.push(randomValue);
 		}
 		return randomValues;
-	};
-
-	let _sum = function(array) {
-		return array.reduce((a, b) => a + b, 0);
-	};
-
-	let _mean = function(array) {
-		return _sum(array) / array.length;
 	};
 
 	let _minBy = function(array, by) {
@@ -68,10 +60,17 @@
 
 
 	let _computeCentroid = function(vectors) {
-		if (vectors.length === 0) {
+		let vectorsCount = vectors.length;
+		if (vectorsCount === 0) {
 			return undefined;
 		}
-		return vectors[0].map((_, i) => _mean(vectors.map(v => v[i])));
+		return vectors[0].map((_, j) => {
+			let sum = 0;
+			for (let i = vectorsCount; i--;) {
+				sum += vectors[i][j];
+			}
+			return sum / vectorsCount;
+		});
 	};
 
 	let _computeDistance = function(vector, anotherVector) {
@@ -91,37 +90,37 @@
 		if (maxIterations <= 0) {
 			return [];
 		}
-		let vectorsSize = vectors.length;
-		if (vectorsSize <= 0) {
+		let vectorsCount = vectors.length;
+		if (vectorsCount <= 0) {
 			return [];
 		}
-		let clustersSize;
+		let clustersCount;
 		let values = vectors;
 		if (Array.isArray(centroids)) {
-			clustersSize = centroids.length;
-			if (clustersSize <= 0) {
+			clustersCount = centroids.length;
+			if (clustersCount <= 0) {
 				return [];
 			}
-			if (clustersSize === 1) {
+			if (clustersCount === 1) {
 				return [values];
 			}
 			vectors = vectors.map(vector => toVector(vector));
 			centroids = centroids.map(centroid => toVector(centroid));
 		} else {
-			clustersSize = centroids;
-			if (clustersSize <= 0) {
+			clustersCount = centroids;
+			if (clustersCount <= 0) {
 				return [];
 			}
-			if (clustersSize === 1) {
+			if (clustersCount === 1) {
 				return [values];
 			}
-			if (clustersSize >= vectorsSize) {
+			if (clustersCount >= vectorsCount) {
 				let clusters = values.map(value => [value]);
-				let emptyClusters = Array.from({length: clustersSize - vectorsSize}, () => []);
+				let emptyClusters = Array.from({length: clustersCount - vectorsCount}, () => []);
 				return clusters.concat(emptyClusters);
 			}
 			vectors = vectors.map(vector => toVector(vector));
-			centroids = _sampleSize(vectors, clustersSize);
+			centroids = _sampleSize(vectors, clustersCount);
 		}
 		let zippedValuesAndVectors = _zip(values, vectors);
 
@@ -138,6 +137,9 @@
 			needy = false;
 			centroids = clusters.map(([values, vectors, oldCentroid]) => {
 				let newCentroid = _computeCentroid(vectors);
+				if (newCentroid === undefined) {
+					return oldCentroid;
+				}
 				if (!_isEqual(oldCentroid, newCentroid)) {
 					needy = true;
 				}

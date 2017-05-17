@@ -9,7 +9,7 @@
 | `vectors` | ... |
 | `centroids` | ... |
 
-Returns an array of maximal cliques.
+Returns an array of clusters.
 
 ## dependencies
 
@@ -25,9 +25,9 @@ console.log(clusters.length); // => 12
 console.log([].concat(...clusters).length); // => 1000
 ```
 
-
-
 ---
+
+...
 
 ```javascript
 let vectors = [[1, 1, 1], ...];
@@ -38,6 +38,8 @@ let clusters = almete.KMeans(vectors, centroids);
 
 ---
 
+...
+
 ```javascript
 let Athlete = class {
   constructor(name, height, weight) {
@@ -45,7 +47,6 @@ let Athlete = class {
     this.height = height;
     this.weight = weight;
   }
-
   toString() {
     return this.name;
   }
@@ -60,8 +61,6 @@ let athletes = [
 let clusters = almete.KMeans(athletes, [athletes[0], athletes[1]], {
   toVector: athlete => [athlete.height, athlete.weight],
 });
-console.log(''+clusters[0]);
-console.log(''+clusters[1]);
 // => [['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'], ['B', 'C']]
 ```
 

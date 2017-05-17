@@ -38,7 +38,7 @@ let clusters = almete.KMeans(vectors, centroids);
 
 ---
 
-...
+Instead of vectors you can use any values. However, you must provide a function to convert each value to a vector.
 
 ```javascript
 let Athlete = class {

@@ -6,8 +6,8 @@ Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-
 
 | argument | description |
 | ---: | :--- |
-| `vectors` | ... |
-| `centroids` | ... |
+| `vectors` | The values to be clustered. |
+| `centroids` | Initial centroids for each cluster. The value can be an array of vectors or a number to be chosen randomly from the vectors. |
 
 Returns an array of clusters.
 

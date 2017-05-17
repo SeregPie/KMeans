@@ -41,21 +41,13 @@ let clusters = almete.KMeans(vectors, centroids);
 ```javascript
 let Athlete = class {
   constructor(name, height, weight) {
-    this._name = name;
-    this._height = height;
-    this._weight = weight;
-  }
-
-  getHeight() { 
-    return this._height;
-  }
-
-  getWeight() {
-    return this._weight;
+    this.name = name;
+    this.height = height;
+    this.weight = weight;
   }
 
   toString() {
-    return this._name;
+    return this.name;
   }
 };
 
@@ -66,8 +58,10 @@ let athletes = [
   new Athlete('J', 180, 88), new Athlete('K', 180, 67), new Athlete('L', 177, 76),
 ];
 let clusters = almete.KMeans(athletes, [athletes[0], athletes[1]], {
-  toVector: athlete => [athlete.getHeight(), athlete.getWeight()],
+  toVector: athlete => [athlete.height, athlete.weight],
 });
+console.log(''+clusters[0]);
+console.log(''+clusters[1]);
 // => [['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'], ['B', 'C']]
 ```
 

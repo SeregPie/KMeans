@@ -2,7 +2,7 @@
 
 `almete.KMeans(vectors, centroids, options)`
 
-...
+Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering).
 
 | argument | description |
 | ---: | :--- |
@@ -38,7 +38,7 @@ let clusters = almete.KMeans(vectors, centroids);
 
 ---
 
-Instead of vectors you can use any values. However, you must provide a function to convert each value to a vector.
+Instead of vectors you can use any values. However, you must provide a function to convert a value to a vector.
 
 ```javascript
 let Athlete = class {

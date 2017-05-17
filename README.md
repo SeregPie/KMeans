@@ -1,6 +1,6 @@
 # almete.KMeans
 
-`almete.KMeans(vectors, centroids, options)`
+`almete.KMeans(vectors, centroids, {toVector, maxIterations = 1024})`
 
 Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition vectors into clusters.
 

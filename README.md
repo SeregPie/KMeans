@@ -7,7 +7,7 @@ Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-
 | argument | description |
 | ---: | :--- |
 | `vectors` | The values to be clustered. |
-| `centroids` | Initial centroids for each cluster. The value can be an array of vectors or a number to be chosen randomly from the vectors. |
+| `centroids` | Initial centroids for each cluster. The value can be an array of vectors or a number to be chosen randomly from the present vectors. |
 
 Returns an array of clusters.
 
@@ -27,7 +27,7 @@ console.log([].concat(...clusters).length); // => 1000
 
 ---
 
-...
+Initialize centroids, where to start the algorithm.
 
 ```javascript
 let vectors = [

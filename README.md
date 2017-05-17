@@ -2,7 +2,7 @@
 
 `almete.KMeans(vectors, centroids, options)`
 
-Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering).
+Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition vectors into clusters.
 
 | argument | description |
 | ---: | :--- |

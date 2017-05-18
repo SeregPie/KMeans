@@ -1,13 +1,15 @@
 # almete.KMeans
 
-`almete.KMeans(vectors, centroids, {toVector, maxIterations = 1024})`
+`almete.KMeans(values, centroids, {toVector, maxIterations = 1024})`
 
 Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition vectors into clusters.
 
 | argument | description |
 | ---: | :--- |
-| `vectors` | The values to be clustered. |
-| `centroids` | Initial centroids for each cluster. The value can be an array of vectors or a number to be chosen randomly from the present vectors. |
+| `values` | The values to be clustered. |
+| `centroids` | Initial centroids for each cluster. The value can be an array of vectors or a number to be chosen randomly from the present values. |
+| `toVector` | The function for converting the values to the vectors. A vector is an array of numbers. If no function is used, it is assumed that the given values and centroids are already vectors. |
+| `maxIterations` | The maximum number of iterations before the algorithm terminates. |
 
 Returns an array of clusters.
 
@@ -47,7 +49,7 @@ console.log(clusters[2]);
 
 ---
 
-Instead of vectors you can use any values. However, you must provide a function to convert a value to a vector.
+You can use any values instead of vectors. In this case you must provide a function to convert a value to a vector.
 
 ```javascript
 let Athlete = class {

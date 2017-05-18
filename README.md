@@ -8,7 +8,7 @@ Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-
 | ---: | :--- |
 | `values` | The values to be clustered. |
 | `centroids` | Initial centroids for each cluster. The value can be an array of vectors or a number to be chosen randomly from the present values. |
-| `toVector` | The function for converting the values to the vectors. A vector is an array of numbers. If no function is used, it is assumed that the given values and centroids are already vectors. |
+| `toVector` | The function for converting the values to the vectors. A vector is an array of numbers. If not specified, it is assumed that the given values and centroids are already vectors. |
 | `maxIterations` | The maximum number of iterations before the algorithm terminates. |
 
 Returns an array of clusters.

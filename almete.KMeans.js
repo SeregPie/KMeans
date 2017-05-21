@@ -13,7 +13,7 @@
 		n = Math.min(n, length);
 		let randomValues = [];
 		while (n--) {
-			let randomIndex = Math.floor(Math.random()*length);
+			let randomIndex = Math.floor(Math.random() * length);
 			let randomValue = array.splice(randomIndex, 1)[0];
 			length--;
 			randomValues.push(randomValue);
@@ -61,11 +61,12 @@
 
 	let _computeCentroid = function(vectors) {
 		let vectorsCount = vectors.length;
-		if (vectorsCount === 0) {
-			return undefined;
+		if (!vectorsCount) {
+			return;
 		}
-		return vectors[0].map((sum, j) => {
-			for (let i = vectorsCount; i-- > 1;) {
+		let ii = vectorsCount - 1;
+		return vectors[ii].map((sum, j) => {
+			for (let i = ii; i--;) {
 				sum += vectors[i][j];
 			}
 			return sum / vectorsCount;
@@ -86,18 +87,18 @@
 		maxIterations = 1024,
 		toVector = _nthArg(),
 	} = {}) {
-		if (maxIterations <= 0) {
+		if (!maxIterations) {
 			return [];
 		}
 		let vectorsCount = vectors.length;
-		if (vectorsCount <= 0) {
+		if (!vectorsCount) {
 			return [];
 		}
 		let clustersCount;
 		let values = vectors;
 		if (Array.isArray(centroids)) {
 			clustersCount = centroids.length;
-			if (clustersCount <= 0) {
+			if (!clustersCount) {
 				return [];
 			}
 			if (clustersCount === 1) {
@@ -107,16 +108,16 @@
 			centroids = centroids.map(centroid => toVector(centroid));
 		} else {
 			clustersCount = centroids;
-			if (clustersCount <= 0) {
+			if (!clustersCount) {
 				return [];
 			}
 			if (clustersCount === 1) {
 				return [values];
 			}
 			if (clustersCount >= vectorsCount) {
-				let clusters = values.map(value => [value]);
+				let valueClusters = values.map(value => [value]);
 				let emptyClusters = Array.from({length: clustersCount - vectorsCount}, () => []);
-				return clusters.concat(emptyClusters);
+				return [...valueClusters, ...emptyClusters];
 			}
 			vectors = vectors.map(vector => toVector(vector));
 			centroids = _sampleSize(vectors, clustersCount);
@@ -127,16 +128,14 @@
 		for (let needy = true; needy && maxIterations--;) {
 			clusters = centroids.map(centroid => [[], [], centroid]);
 			zippedValuesAndVectors.forEach(([value, vector]) => {
-				let [values, vectors] = _minBy(clusters, ([a, b, centroid]) => {
-					return _computeDistance(vector, centroid);
-				});
+				let [values, vectors] = _minBy(clusters, ([a, b, centroid]) => _computeDistance(vector, centroid));
 				values.push(value);
 				vectors.push(vector);
 			});
 			needy = false;
 			centroids = clusters.map(([values, vectors, oldCentroid]) => {
 				let newCentroid = _computeCentroid(vectors);
-				if (newCentroid === undefined) {
+				if (!newCentroid) {
 					return oldCentroid;
 				}
 				if (!_isEqual(oldCentroid, newCentroid)) {

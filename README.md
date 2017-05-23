@@ -1,14 +1,14 @@
 # almete.KMeans
 
-`almete.KMeans(values, centroids, {toVector, maxIterations = 1024})`
+`almete.KMeans(values, clusters, {map, isEqual, distanceBetween, meanOf, maxIterations = 1024})`
 
 Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition vectors into clusters.
 
 | argument | description |
 | ---: | :--- |
 | `values` | The values to be clustered. |
-| `centroids` | Initial centroids for each cluster. The value can be an array of vectors or a number to be chosen randomly from the present values. |
-| `toVector` | The function for converting the values to the vectors. A vector is an array of numbers. If omitted, it is assumed that the given values and centroids are already vectors. |
+| `clusters` | Initial centroids for each cluster. The value can be an array of vectors or a number to take from the given values. |
+| `map` | The function for converting the values to the vectors. A vector is an array of numbers. If omitted, it is assumed that the given values are already vectors. |
 | `maxIterations` | The maximum number of iterations before the algorithm terminates. |
 
 Returns an array of clusters.
@@ -40,9 +40,9 @@ let vectors = [
 let centroids = [[7, 0, 0], [0, 7, 0], [0, 0, 7]];
 let clusters = almete.KMeans(vectors, centroids);
 console.log(clusters[0]);
-// => [[6, 7, 9], [5, 2, 4], [7, 6, 4], [8, 3, 4], [7, 8, 7], [6, 5, 5], [8, 5, 8]]
+// => [[6, 7, 9], [5, 2, 4], [7, 7, 0], [7, 6, 4], [8, 3, 4], [7, 8, 7], [6, 5, 5], [8, 5, 8]]
 console.log(clusters[1]);
-// => [[7, 7, 0], [0, 9, 2], [3, 8, 2]]
+// => [[0, 9, 2], [3, 8, 2]]
 console.log(clusters[2]);
 // => [[0, 1, 6], [0, 4, 8], [2, 3, 5], [0, 3, 6], [0, 4, 9]]
 ```
@@ -70,7 +70,7 @@ let athletes = [
   new Athlete('J', 180, 88), new Athlete('K', 180, 67), new Athlete('L', 177, 76),
 ];
 let clusters = almete.KMeans(athletes, [athletes[0], athletes[1]], {
-  toVector: athlete => [athlete.height, athlete.weight],
+  map: athlete => [athlete.height, athlete.weight],
 });
 // => [['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'], ['B', 'C']]
 ```

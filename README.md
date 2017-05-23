@@ -23,8 +23,8 @@ Returns an array of clusters.
 let vectorSize = 3, vectorsCount = 1000, clustersCount = 12;
 let vectors = new Array(vectorsCount).map(() => new Array(vectorSize).map(() => Math.random()));
 let clusters = almete.KMeans(vectors, clustersCount);
-console.log(clusters.length); // => 12
-console.log([].concat(...clusters).length); // => 1000
+console.log(clusters.length === clustersCount); // => true
+console.log([].concat(...clusters).length === vectorsCount); // => true
 ```
 
 ---

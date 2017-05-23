@@ -7,144 +7,170 @@
 	}
 }).call(this, function(almete) {
 
-	let _sampleSize = function(array, n) {
-		array = array.slice();
-		let length = array.length;
-		n = Math.min(n, length);
-		let randomValues = [];
-		while (n--) {
-			let randomIndex = Math.floor(Math.random() * length);
-			let randomValue = array.splice(randomIndex, 1)[0];
-			length--;
-			randomValues.push(randomValue);
+	let _forEach = function(array, iteratee, i = 0, ii) {
+		let l = array.length;
+		ii = (ii === undefined) ? l : Math.min(ii, l);
+		while (i < ii) {
+			if (iteratee(array[i], i) === false) {
+				break;
+			}
+			++i;
 		}
-		return randomValues;
 	};
 
-	let _minBy = function(array, by) {
-		let minValue;
+	let _fillBy = function(array, iteratee, i = 0, ii) {
+		let l = array.length;
+		ii = (ii === undefined) ? l : Math.min(ii, l);
+		while (--ii >= i) {
+			array[ii] = iteratee(ii);
+		}
+		return array;
+	};
+
+	let _map = function(array, iteratee) {
+		let returns = new Array(array.length);
+		_forEach(array, (value, index) => {
+			returns[index] = iteratee(value, index);
+		});
+		return returns;
+	};
+
+	let _minBy = function(array, iteratee) {
+		let returns;
 		let minN = Infinity;
-		for (let i = array.length; i--;) {
-			let value = array[i];
-			let n = by(value);
-			if (n < minN) {
-				minN = n;
-				minValue = value;
+		_forEach(array, (value, index) => {
+			let newN = iteratee(value, index);
+			if (newN < minN) {
+				minN = newN;
+				returns = value;
 			}
-		}
-		return minValue;
-	};
-
-	let _zip = function(array, ...otherArrays) {
-		return array.map((value, i) => {
-			return [value, ...otherArrays.map(array => array[i])];
 		});
+		return returns;
 	};
 
-	let _isEqual = function(value, otherValue) {
-		if (value === otherValue) {
-			return true;
-		}
-		if (Array.isArray(value) && Array.isArray(otherValue) && value.length === otherValue.length) {
-			return _zip(value, otherValue).every(([value, otherValue]) => _isEqual(value, otherValue));
-		}
-		return false;
+	let _zip = function(array, otherArray) {
+		return _map(array, (value, index) => [value, otherArray[index]]);
 	};
 
-	let _nthArg = function(n = 0) {
-		return function(...args) {
-			return args[n];
-		};
-	};
-
-
-
-	let _computeCentroid = function(vectors) {
-		let vectorsCount = vectors.length;
-		if (!vectorsCount) {
-			return;
-		}
-		let ii = vectorsCount - 1;
-		return vectors[ii].map((sum, j) => {
-			for (let i = ii; i--;) {
-				sum += vectors[i][j];
+	let _every = function(array, iteratee) {
+		let returns = true;
+		_forEach(array, (value, index) => {
+			if (!iteratee(value, index)) {
+				return(returns = false);
 			}
-			return sum / vectorsCount;
 		});
+		return returns;
 	};
 
-	let _computeDistance = function(vector, anotherVector) {
-		let squaredDistance = 0;
-		for (let i = Math.min(vector.length, anotherVector.length); i--;) {
-			squaredDistance += Math.pow(vector[i] - anotherVector[i], 2);
-		}
-		return Math.sqrt(squaredDistance);
+	let _stubArray = function() {
+		return [];
 	};
 
 
 
-	return(almete.KMeans = function(vectors, centroids, {
-		maxIterations = 1024,
-		toVector = _nthArg(),
-	} = {}) {
-		if (!maxIterations) {
+	let defaultOptions = {
+		maxIterations: 1024,
+
+		map: function(vector) {
+			return vector;
+		},
+
+		isEqual: function(vector, otherVector) {
+			return _every(vector, (v, i) => v === otherVector[i]);
+		},
+
+		distanceBetween: function(vector, otherVector) {
+			let squaredDistance = 0;
+			_forEach(vector, (v, i) => {
+				squaredDistance += Math.pow(v - otherVector[i], 2);
+			});
+			return Math.sqrt(squaredDistance);
+		},
+
+		meanOf: function(vectors) {
+			let l = vectors.length;
+			return _map(vectors[0], (s, i) => {
+				_forEach(vectors, vector => {
+					s += vector[i];
+				}, 1);
+				return s / l;
+			});
+		},
+	};
+
+
+
+	return(almete.KMeans = Object.assign(function(values, clusters, options) {
+		let {
+			maxIterations,
+			map,
+			isEqual,
+			distanceBetween,
+			meanOf,
+		} = Object.assign({}, defaultOptions, options);
+		if (maxIterations <= 0) {
 			return [];
 		}
-		let vectorsCount = vectors.length;
-		if (!vectorsCount) {
+		let valuesCount = values.length;
+		if (valuesCount <= 0) {
 			return [];
 		}
 		let clustersCount;
-		let values = vectors;
-		if (Array.isArray(centroids)) {
-			clustersCount = centroids.length;
-			if (!clustersCount) {
+		let originalValues = values;
+		if (Array.isArray(clusters)) {
+			clustersCount = clusters.length;
+			if (clustersCount <= 0) {
 				return [];
 			}
 			if (clustersCount === 1) {
-				return [values];
+				return [originalValues.slice()];
 			}
-			vectors = vectors.map(vector => toVector(vector));
-			centroids = centroids.map(centroid => toVector(centroid));
+			values = _map(values, value => map(value));
+			clusters = _map(clusters, cluster => map(cluster));
 		} else {
-			clustersCount = centroids;
-			if (!clustersCount) {
+			clustersCount = clusters;
+			if (clustersCount <= 0) {
 				return [];
 			}
 			if (clustersCount === 1) {
-				return [values];
+				return [originalValues.slice()];
 			}
-			if (clustersCount >= vectorsCount) {
-				let valueClusters = values.map(value => [value]);
-				let emptyClusters = Array.from({length: clustersCount - vectorsCount}, () => []);
-				return [...valueClusters, ...emptyClusters];
+			if (clustersCount >= valuesCount) {
+				let returns = new Array(clustersCount);
+				_fillBy(returns, i => [originalValues[i]], 0, valuesCount);
+				_fillBy(returns, _stubArray, valuesCount);
+				return returns;
 			}
-			vectors = vectors.map(vector => toVector(vector));
-			centroids = _sampleSize(vectors, clustersCount);
+			values = _map(values, value => map(value));
+			clusters = values.slice(0, clustersCount);
 		}
-		let zippedValuesAndVectors = _zip(values, vectors);
+		let zippedValues = _zip(originalValues, values);
 
-		let clusters;
-		for (let needy = true; needy && maxIterations--;) {
-			clusters = centroids.map(centroid => [[], [], centroid]);
-			zippedValuesAndVectors.forEach(([value, vector]) => {
-				let [values, vectors] = _minBy(clusters, ([a, b, centroid]) => _computeDistance(vector, centroid));
+		let clusteredValues;
+		let loop;
+		do {
+			clusteredValues = _map(clusters, value => [[], [], value]);
+			_forEach(zippedValues, ([originalValue, value]) => {
+				let [originalValues, values] = _minBy(clusteredValues, ([a, b, clusterValue]) => distanceBetween(value, clusterValue));
+				originalValues.push(originalValue);
 				values.push(value);
-				vectors.push(vector);
 			});
-			needy = false;
-			centroids = clusters.map(([values, vectors, oldCentroid]) => {
-				let newCentroid = _computeCentroid(vectors);
-				if (!newCentroid) {
-					return oldCentroid;
+			if (--maxIterations <= 0) {
+				break;
+			}
+			loop = false;
+			clusters = _map(clusteredValues, ([a, values, oldClusterValue]) => {
+				if (values.length <= 0) {
+					return oldClusterValue;
 				}
-				if (!_isEqual(oldCentroid, newCentroid)) {
-					needy = true;
+				let newClusterValue = meanOf(values);
+				if (!isEqual(oldClusterValue, newClusterValue)) {
+					loop = true;
 				}
-				return newCentroid;
+				return newClusterValue;
 			});
-		}
-		return clusters.map(([values]) => values);
-	});
+		} while (loop);
+		return _map(clusteredValues, ([originalValues]) => originalValues);
+	}, defaultOptions));
 
 });

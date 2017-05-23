@@ -21,7 +21,7 @@ Returns an array of clusters.
 
 ```javascript
 let vectorSize = 3, vectorsCount = 1000, clustersCount = 12;
-let vectors = Array.from({length: vectorsCount}, () => Array.from({length: vectorSize}, () => Math.random()));
+let vectors = new Array(vectorsCount).map(() => new Array(vectorSize).map(() => Math.random()));
 let clusters = almete.KMeans(vectors, clustersCount);
 console.log(clusters.length); // => 12
 console.log([].concat(...clusters).length); // => 1000

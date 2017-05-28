@@ -108,18 +108,18 @@
 			distanceBetween,
 			meanOf,
 		} = Object.assign({}, defaultOptions, options);
-		if (maxIterations <= 0) {
+		if (maxIterations < 1) {
 			return [];
 		}
 		let valuesCount = values.length;
-		if (valuesCount <= 0) {
+		if (valuesCount < 1) {
 			return [];
 		}
 		let clustersCount;
 		let originalValues = values;
 		if (Array.isArray(clusters)) {
 			clustersCount = clusters.length;
-			if (clustersCount <= 0) {
+			if (clustersCount < 1) {
 				return [];
 			}
 			if (clustersCount === 1) {
@@ -129,7 +129,7 @@
 			clusters = _map(clusters, cluster => map(cluster));
 		} else {
 			clustersCount = clusters;
-			if (clustersCount <= 0) {
+			if (clustersCount < 1) {
 				return [];
 			}
 			if (clustersCount === 1) {
@@ -155,12 +155,12 @@
 				originalValues.push(originalValue);
 				values.push(value);
 			});
-			if (--maxIterations <= 0) {
+			if (--maxIterations < 1) {
 				break;
 			}
 			loop = false;
 			clusters = _map(clusteredValues, ([a, values, oldClusterValue]) => {
-				if (values.length <= 0) {
+				if (values.length < 1) {
 					return oldClusterValue;
 				}
 				let newClusterValue = meanOf(values);

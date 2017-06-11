@@ -8,10 +8,10 @@ Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-
 | ---: | :--- |
 | `values` | An array of values to be clustered. |
 | `clusters` | Initial centroids for each cluster. The value can be an array of vectors or a number to take from the given values. |
-| `map` | The function for converting a value to a vector. A vector is an array of numbers. If omitted, it is assumed that the given values are already vectors. |
+| `map` | A function for converting a value to a vector. A vector is an array of numbers. If omitted, it is assumed that the given values are already vectors. |
 | `maxIterations` | The maximum number of iterations before the algorithm terminates. |
 
-Returns an array of clusters.
+Returns clusters as an array of arrays.
 
 ## dependencies
 

@@ -54,12 +54,12 @@ You can use any values instead of vectors. In this case you must provide a funct
 ```javascript
 let Athlete = class {
   constructor(name, height, weight) {
-    this.name = name;
-    this.height = height;
-    this.weight = weight;
+	this.name = name;
+	this.height = height;
+	this.weight = weight;
   }
   toString() {
-    return this.name;
+	return this.name;
   }
 };
 
@@ -73,6 +73,16 @@ let clusters = almete.KMeans(athletes, [athletes[0], athletes[1]], {
   map: athlete => [athlete.height, athlete.weight],
 });
 // => [['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'], ['B', 'C']]
+```
+
+## Node.js
+
+The [package](https://www.npmjs.com/package/almete.kmeans) can be installed via npm and used as a Node.js module.
+
+```javascript
+const almete = {
+  KMeans: require('almete.kmeans'),
+};
 ```
 
 ## see also

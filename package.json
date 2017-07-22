@@ -1,0 +1,16 @@
+{
+  "name": "almete.kmeans",
+  "version": "17.7.22",
+  "description": "Implementation of the basic k-means algorithm to partition vectors into clusters.",
+  "main": "almete.KMeans.js",
+  "repository": {
+	"type": "git",
+	"url": "git+https://github.com/SeregPie/almete.KMeans.git"
+  },
+  "author": "Sergej Sintschilin",
+  "license": "MIT",
+  "bugs": {
+	"url": "https://github.com/SeregPie/almete.KMeans/issues"
+  },
+  "homepage": "https://github.com/SeregPie/almete.KMeans#readme"
+}

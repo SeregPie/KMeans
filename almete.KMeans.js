@@ -1,11 +1,12 @@
 (function(factory) {
 	if (typeof module !== 'undefined' && typeof exports !== 'undefined' && this === exports) {
-		module.exports = factory({});
+		factory(module);
 	} else {
-		this.almete = this.almete || {};
-		factory(this.almete);
+		let module = {};
+		factory(module);
+		(this.almete = this.almete || {}).KMeans = module.exports;
 	}
-}).call(this, function(almete) {
+}).call(this, function(module) {
 
 	let _forEach = function(array, iteratee, i = 0, ii) {
 		let l = array.length;
@@ -100,7 +101,7 @@
 
 
 
-	return(almete.KMeans = Object.assign(function(values, clusters, options) {
+	let KMeans = function(values, clusters, options) {
 		let {
 			maxIterations,
 			map,
@@ -171,6 +172,10 @@
 			});
 		} while (loop);
 		return _map(clusteredValues, ([originalValues]) => originalValues);
-	}, defaultOptions));
+	};
+
+	Object.assign(KMeans, defaultOptions);
+
+	module.exports = KMeans;
 
 });

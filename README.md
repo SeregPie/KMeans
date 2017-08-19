@@ -17,14 +17,44 @@ Returns clusters as an array of arrays.
 
 *no dependencies*
 
+## setup
+
+Install the [package](https://www.npmjs.com/package/almete.kmeans) via npm.
+
+```sh
+
+npm install almete.kmeans
+
+```
+
+Import the module into your Node.js project.
+
+```javascript
+
+const almete = {KMeans: require('almete.kmeans')};
+
+```
+
+---
+
+Include the code in your page via a CDN.
+
+```html
+
+<script src="https://unpkg.com/almete.kmeans"></script>
+
+```
+
 ## usage
 
 ```javascript
+
 let vectorSize = 3, vectorsCount = 1000, clustersCount = 12;
 let vectors = new Array(vectorsCount).map(() => new Array(vectorSize).map(() => Math.random()));
 let clusters = almete.KMeans(vectors, clustersCount);
 console.log(clusters.length === clustersCount); // => true
 console.log([].concat(...clusters).length === vectorsCount); // => true
+
 ```
 
 ---
@@ -32,6 +62,7 @@ console.log([].concat(...clusters).length === vectorsCount); // => true
 Initialize centroids, where to start the algorithm.
 
 ```javascript
+
 let vectors = [
   [6, 7, 9], [0, 1, 6], [5, 2, 4], [7, 7, 0], [0, 4, 8],
   [0, 9, 2], [2, 3, 5], [0, 3, 6], [7, 6, 4], [8, 3, 4],
@@ -45,6 +76,7 @@ console.log(clusters[1]);
 // => [[0, 9, 2], [3, 8, 2]]
 console.log(clusters[2]);
 // => [[0, 1, 6], [0, 4, 8], [2, 3, 5], [0, 3, 6], [0, 4, 9]]
+
 ```
 
 ---
@@ -52,6 +84,7 @@ console.log(clusters[2]);
 You can use any values instead of vectors. In this case you must provide a function to convert a value to a vector.
 
 ```javascript
+
 let Athlete = class {
   constructor(name, height, weight) {
 	this.name = name;
@@ -73,16 +106,7 @@ let clusters = almete.KMeans(athletes, [athletes[0], athletes[1]], {
   map: athlete => [athlete.height, athlete.weight],
 });
 // => [['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'], ['B', 'C']]
-```
 
-## Node.js
-
-The [package](https://www.npmjs.com/package/almete.kmeans) can be installed via npm and used as a Node.js module.
-
-```javascript
-const almete = {
-  KMeans: require('almete.kmeans'),
-};
 ```
 
 ## see also

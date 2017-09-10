@@ -1,12 +1,10 @@
 (function(factory) {
 	if (typeof module !== 'undefined' && typeof exports !== 'undefined' && this === exports) {
-		factory(module);
+		module.exports = factory();
 	} else {
-		let module = {};
-		factory(module);
-		(this.almete = this.almete || {}).KMeans = module.exports;
+		(this.almete = this.almete || {}).KMeans = factory();
 	}
-}).call(this, function(module) {
+}).call(this, function() {
 
 	let _forEach = function(array, iteratee, i = 0, ii) {
 		let l = array.length;
@@ -72,15 +70,15 @@
 	let defaultOptions = {
 		maxIterations: 1024,
 
-		map: function(vector) {
+		map(vector) {
 			return vector;
 		},
 
-		isEqual: function(vector, otherVector) {
+		isEqual(vector, otherVector) {
 			return _every(vector, (v, i) => v === otherVector[i]);
 		},
 
-		distanceBetween: function(vector, otherVector) {
+		distanceBetween(vector, otherVector) {
 			let squaredDistance = 0;
 			_forEach(vector, (v, i) => {
 				squaredDistance += Math.pow(v - otherVector[i], 2);
@@ -88,7 +86,7 @@
 			return Math.sqrt(squaredDistance);
 		},
 
-		meanOf: function(vectors) {
+		meanOf(vectors) {
 			let l = vectors.length;
 			return _map(vectors[0], (s, i) => {
 				_forEach(vectors, vector => {
@@ -152,7 +150,7 @@
 		do {
 			clusteredValues = _map(clusters, value => [[], [], value]);
 			_forEach(zippedValues, ([originalValue, value]) => {
-				let [originalValues, values] = _minBy(clusteredValues, ([a, b, clusterValue]) => distanceBetween(value, clusterValue));
+				let [originalValues, values] = _minBy(clusteredValues, ([,, clusterValue]) => distanceBetween(value, clusterValue));
 				originalValues.push(originalValue);
 				values.push(value);
 			});
@@ -160,7 +158,7 @@
 				break;
 			}
 			loop = false;
-			clusters = _map(clusteredValues, ([a, values, oldClusterValue]) => {
+			clusters = _map(clusteredValues, ([, values, oldClusterValue]) => {
 				if (values.length < 1) {
 					return oldClusterValue;
 				}
@@ -176,6 +174,6 @@
 
 	Object.assign(KMeans, defaultOptions);
 
-	module.exports = KMeans;
+	return KMeans;
 
 });

@@ -1,6 +1,6 @@
 {
 	"name": "almete.kmeans",
-	"version": "17.8.19",
+	"version": "17.9.10",
 	"description": "Implementation of the basic k-means algorithm to partition vectors into clusters.",
 	"main": "almete.KMeans.js",
 	"repository": {

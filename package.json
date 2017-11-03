@@ -1,8 +1,12 @@
 {
 	"name": "almete.kmeans",
-	"version": "17.9.10",
+	"version": "17.11.3",
 	"description": "Implementation of the basic k-means algorithm to partition vectors into clusters.",
 	"main": "almete.KMeans.js",
+	"scripts": {
+		"build": "rollup -c",
+		"prepublishOnly": "npm run build"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/SeregPie/almete.KMeans.git"
@@ -26,5 +30,11 @@
 	"bugs": {
 		"url": "https://github.com/SeregPie/almete.KMeans/issues"
 	},
-	"homepage": "https://github.com/SeregPie/almete.KMeans#readme"
+	"homepage": "https://github.com/SeregPie/almete.KMeans#readme",
+	"devDependencies": {
+		"eslint": "^4.10.0",
+		"rollup": "^0.50.0",
+		"rollup-plugin-buble": "^0.16.0",
+		"rollup-plugin-uglify": "^2.0.1"
+	}
 }

@@ -1,6 +1,6 @@
 # almete.KMeans
 
-`almete.KMeans(values, clusters, {map, isEqual, distanceBetween, meanOf, maxIterations = 1024})`
+`almete.KMeans(values, clusters, {map, isEqual, distanceBetween, mean, maxIterations = 1024})`
 
 Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition vectors into clusters.
 
@@ -45,12 +45,20 @@ Include the code in your page via a CDN.
 
 ```
 
+Include [polyfills](https://polyfill.io/) to support older browsers.
+
+```html
+
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+
+```
+
 ## usage
 
 ```javascript
 
 let vectorSize = 3, vectorsCount = 1000, clustersCount = 12;
-let vectors = new Array(vectorsCount).map(() => new Array(vectorSize).map(() => Math.random()));
+let vectors = Array.from({length: vectorsCount}, () => Array.from(({length: vectorSize}), () => Math.random()));
 let clusters = almete.KMeans(vectors, clustersCount);
 console.log(clusters.length === clustersCount); // => true
 console.log([].concat(...clusters).length === vectorsCount); // => true
@@ -87,12 +95,12 @@ You can use any values instead of vectors. In this case you must provide a funct
 
 let Athlete = class {
   constructor(name, height, weight) {
-	this.name = name;
-	this.height = height;
-	this.weight = weight;
+    this.name = name;
+    this.height = height;
+    this.weight = weight;
   }
   toString() {
-	return this.name;
+    return this.name;
   }
 };
 

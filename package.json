@@ -1,6 +1,6 @@
 {
 	"name": "almete.kmeans",
-	"version": "17.11.3",
+	"version": "18.1.14",
 	"description": "Implementation of the basic k-means algorithm to partition vectors into clusters.",
 	"main": "almete.KMeans.js",
 	"scripts": {
@@ -13,17 +13,16 @@
 	},
 	"keywords": [
 		"algorithm",
+		"array",
+		"average",
+		"centroid",
+		"cluster",
+		"iteration",
+		"k-means",
+		"mean",
 		"method",
 		"technique",
-		"cluster",
-		"clustering",
-		"array",
-		"vector",
-		"centroid",
-		"k-means",
-		"iteration",
-		"mean",
-		"average"
+		"vector"
 	],
 	"author": "Sergej Sintschilin",
 	"license": "MIT",
@@ -32,9 +31,9 @@
 	},
 	"homepage": "https://github.com/SeregPie/almete.KMeans#readme",
 	"devDependencies": {
-		"eslint": "^4.10.0",
-		"rollup": "^0.50.0",
-		"rollup-plugin-buble": "^0.16.0",
+		"eslint": "^4.15.0",
+		"rollup": "^0.54.0",
+		"rollup-plugin-buble": "^0.18.0",
 		"rollup-plugin-uglify": "^2.0.1"
 	}
 }

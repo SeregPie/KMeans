@@ -45,14 +45,6 @@ const KMeans = require('almete.kmeans');
 
 The function `KMeans` will be available under the namespace `almete`.
 
----
-
-Include [polyfills](https://polyfill.io/) to support older browsers.
-
-```html
-<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-```
-
 ## usage
 
 ```javascript

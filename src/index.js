@@ -1,5 +1,5 @@
-import Array_minBy from './helpers/Array/minBy';
-import Array_zip from './helpers/Array/zip';
+import Array_minBy from 'x/src/Array/minBy';
+import Array_zip from 'x/src/Array/zip';
 
 let KMeans = function(values, clusters, options) {
 	let {

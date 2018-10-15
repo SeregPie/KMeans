@@ -34,7 +34,7 @@ import KMeans from 'almete.kmeans';
 ### Node
 
 ```javascript
-const KMeans = require('almete.kmeans');
+let KMeans = require('almete.kmeans');
 ```
 
 ### browser

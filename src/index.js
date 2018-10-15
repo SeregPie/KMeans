@@ -1,5 +1,5 @@
-import Array_minBy from 'x/src/Array/minBy';
-import Array_zip from 'x/src/Array/zip';
+import Array_minBy from '/utils/Array/minBy';
+import Array_zip from '/utils/Array/zip';
 
 let KMeans = function(values, clusters, options) {
 	let {
@@ -8,7 +8,7 @@ let KMeans = function(values, clusters, options) {
 		isEqual,
 		distanceBetween,
 		mean,
-	} = Object.assign({}, KMeans, options);
+	} = {...KMeans, ...options};
 	if (maxIterations < 1) {
 		return [];
 	}

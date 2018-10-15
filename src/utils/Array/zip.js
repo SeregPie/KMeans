@@ -1,5 +1,3 @@
-// refactor me
-
-export default function(array, ...otherArrays) {
-	return array.map((value, index) => [value, ...otherArrays.map(otherArray => otherArray[index])]);
+export default function(array, otherArray) {
+	return array.map((value, index) => [value, otherArray[index]]);
 }

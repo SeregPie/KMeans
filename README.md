@@ -1,14 +1,13 @@
 # almete.KMeans
 
-`almete.KMeans(values, clusters, {map, distanceBetween, mean, maxIterations = 1024})`
+`almete.KMeans(vectors, centroids, {map, distanceBetween, mean, maxIterations = 1024})`
 
 Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition vectors into clusters.
 
 | argument | description |
 | ---: | :--- |
-| `values` | An array of values to be clustered. |
-| `clusters` | Initial centroids for each cluster. The value can be an array of vectors or a number to take from the given values. |
-| `map` | A function for converting a value to a vector. A vector is an array of numbers. If omitted, it is assumed that the given values are already vectors. |
+| `vectors` | An array of vectors to be clustered. |
+| `centroids` | Initial centroids for each cluster. The value can be an array of vectors or a number to take from the given values. |
 | `maxIterations` | The maximum number of iterations before the algorithm terminates. |
 
 Returns clusters as an array of arrays.
@@ -57,7 +56,7 @@ console.log([].concat(...clusters).length === vectorsCount); // => true
 
 ---
 
-Initialize centroids, where to start the algorithm.
+Initialize centroids where to start the algorithm.
 
 ```javascript
 let vectors = [
@@ -86,7 +85,7 @@ let Athlete = class {
     this.height = height;
     this.weight = weight;
   }
-  toString() {
+  toJSON() {
     return this.name;
   }
 };

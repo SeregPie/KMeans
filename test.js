@@ -17,12 +17,9 @@ let KMeans = require('./almete.KMeans');
 	];
 	let centroids = [[7, 0, 0], [0, 7, 0], [0, 0, 7]];
 	let clusters = KMeans(vectors, centroids);
-	console.log(clusters[0]);
-	// => [[6, 7, 9], [5, 2, 4], [7, 7, 0], [7, 6, 4], [8, 3, 4], [7, 8, 7], [6, 5, 5], [8, 5, 8]]
-	console.log(clusters[1]);
-	// => [[0, 9, 2], [3, 8, 2]]
-	console.log(clusters[2]);
-	// => [[0, 1, 6], [0, 4, 8], [2, 3, 5], [0, 3, 6], [0, 4, 9]]
+	console.log(JSON.stringify(clusters[0]) === JSON.stringify([[6, 7, 9], [5, 2, 4], [7, 7, 0], [7, 6, 4], [8, 3, 4], [7, 8, 7], [6, 5, 5], [8, 5, 8]]));
+	console.log(JSON.stringify(clusters[1]) === JSON.stringify([[0, 9, 2], [3, 8, 2]]));
+	console.log(JSON.stringify(clusters[2]) === JSON.stringify([[0, 1, 6], [0, 4, 8], [2, 3, 5], [0, 3, 6], [0, 4, 9]]));
 }
 {
 	let Athlete = class {
@@ -31,7 +28,7 @@ let KMeans = require('./almete.KMeans');
 			this.height = height;
 			this.weight = weight;
 		}
-		toString() {
+		toJSON() {
 			return this.name;
 		}
 	};
@@ -45,6 +42,5 @@ let KMeans = require('./almete.KMeans');
 	let clusters = KMeans(athletes, [athletes[0], athletes[1]], {
 		map: athlete => [athlete.height, athlete.weight],
 	});
-	console.log(clusters);
-	// => [['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'], ['B', 'C']]
+	console.log(JSON.stringify(clusters) === JSON.stringify([['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'], ['B', 'C']]));
 }

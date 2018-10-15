@@ -83,11 +83,7 @@ Object.assign(KMeans, {
 	},
 
 	distanceBetween(vector, otherVector) {
-		let squaredDistance = 0;
-		vector.forEach((value, index) => {
-			squaredDistance += Math.pow(value - otherVector[index], 2);
-		});
-		return Math.sqrt(squaredDistance);
+		return Math.sqrt(vector.reduce((squaredDistance, value, index) => squaredDistance + Math.pow(value - otherVector[index], 2), 0));
 	},
 
 	mean(vectors) {

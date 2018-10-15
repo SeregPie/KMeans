@@ -1,6 +1,6 @@
 # almete.KMeans
 
-`almete.KMeans(values, clusters, {map, isEqual, distanceBetween, mean, maxIterations = 1024})`
+`almete.KMeans(values, clusters, {map, distanceBetween, mean, maxIterations = 1024})`
 
 Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition vectors into clusters.
 

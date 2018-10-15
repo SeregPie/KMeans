@@ -1,102 +1,71 @@
 import Array_minBy from '/utils/Array/minBy';
-import Array_zip from '/utils/Array/zip';
+import Function_identity from '/utils/Function/identity';
+import Function_stubArray from '/utils/Function/stubArray';
+import Lang_isEqual from '/utils/Lang/isEqual';
 
-let KMeans = function(values, clusters, options) {
+let KMeans = function(values, initialCentroids, options) {
 	let {
 		maxIterations,
 		map,
-		isEqual,
 		distanceBetween,
 		mean,
 	} = {...KMeans, ...options};
-	if (maxIterations < 1) {
+	if (values.length < 1) {
 		return [];
 	}
-	let valuesCount = values.length;
-	if (valuesCount < 1) {
-		return [];
-	}
-	let clustersCount;
-	let originalValues = values;
-	if (Array.isArray(clusters)) {
-		clustersCount = clusters.length;
-		if (clustersCount < 1) {
+	let vectors;
+	if (Array.isArray(initialCentroids)) {
+		if (initialCentroids.length < 1) {
 			return [];
 		}
-		if (clustersCount === 1) {
-			return [originalValues.slice()];
+		if (initialCentroids.length === 1) {
+			return [values.slice()];
 		}
-		values = values.map(value => map(value));
-		clusters = clusters.map(cluster => map(cluster));
+		vectors = values.map(value => map(value));
+		initialCentroids = initialCentroids.map(value => map(value));
 	} else {
-		clustersCount = clusters;
-		if (clustersCount < 1) {
+		if (initialCentroids < 1) {
 			return [];
 		}
-		if (clustersCount === 1) {
-			return [originalValues.slice()];
+		if (initialCentroids === 1) {
+			return [values.slice()];
 		}
-		if (clustersCount >= valuesCount) {
-			return originalValues.map(originalValue => [originalValue]);
+		if (initialCentroids >= values.length) {
+			return values.map(value => [value]);
 		}
-		values = values.map(value => map(value));
-		clusters = values.slice(0, clustersCount);
+		vectors = values.map(value => map(value));
+		initialCentroids = vectors.slice(0, initialCentroids);
 	}
-	let zippedValues = Array_zip(originalValues, values);
-
-	let clusteredValues;
-	let continueLoop;
-	do {
-		clusteredValues = clusters.map(value => [[], [], value]);
-		zippedValues.forEach(([originalValue, value]) => {
-			let [originalValues, values] = Array_minBy(clusteredValues, ([,, clusterValue]) => distanceBetween(value, clusterValue));
-			originalValues.push(originalValue);
-			values.push(value);
+	let centroids = initialCentroids;
+	let clusters = centroids.map(Function_stubArray);
+	for (let i = 0; i < maxIterations; i++) {
+		let newClusters = centroids.map(Function_stubArray);
+		vectors.forEach((vector, index) => {
+			let cluster = Array_minBy(newClusters, (cluster, index) => distanceBetween(vector, centroids[index]));
+			cluster.push(index);
 		});
-		if (--maxIterations < 1) {
+		if (Lang_isEqual(newClusters, clusters)) {
 			break;
 		}
-		continueLoop = false;
-		clusters = clusteredValues.map(([, values, oldClusterValue]) => {
-			if (values.length < 1) {
-				return oldClusterValue;
-			}
-			let newClusterValue = mean(values);
-			if (!isEqual(oldClusterValue, newClusterValue)) {
-				continueLoop = true;
-			}
-			return newClusterValue;
-		});
-	} while (continueLoop);
-	return clusteredValues.map(([originalValues]) => originalValues);
+		clusters = newClusters;
+		centroids = clusters.map((cluster, index) => (cluster.length > 0) ? mean(cluster.map(index => vectors[index])) : initialCentroids[index]);
+	}
+	return clusters.map(cluster => cluster.map(index => values[index]));
 };
 
 Object.assign(KMeans, {
 	maxIterations: 1024,
 
-	map(vector) {
-		return vector;
-	},
-
-	isEqual(vector, otherVector) {
-		return vector.every((value, index) => value === otherVector[index]);
-	},
+	map: Function_identity,
 
 	distanceBetween(vector, otherVector) {
 		return Math.sqrt(vector.reduce((squaredDistance, value, index) => squaredDistance + Math.pow(value - otherVector[index], 2), 0));
 	},
 
 	mean(vectors) {
-		let vectorsCount = vectors.length;
-		if (vectorsCount > 0) {
-			let meanVector = vectors[0].map(() => 0);
-			vectors.forEach(vector => {
-				vector.forEach((value, index) => {
-					meanVector[index] += value / vectorsCount;
-				});
-			});
-			return meanVector;
-		}
+		return vectors
+			.map(vector => vector.map(value => value / vectors.length))
+			.reduce((centroid, vector) => centroid.map((value, index) => value + vector[index]));
 	},
 });
 

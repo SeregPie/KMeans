@@ -41,14 +41,20 @@ let KMeans = function(values, initialCentroids, options) {
 	for (let i = 0; i < maxIterations; i++) {
 		let newClusters = centroids.map(Function_stubArray);
 		vectors.forEach((vector, index) => {
-			let cluster = Array_minBy(newClusters, (cluster, index) => distanceBetween(vector, centroids[index]));
+			let cluster = Array_minBy(newClusters, (cluster, index) =>
+				distanceBetween(vector, centroids[index])
+			);
 			cluster.push(index);
 		});
 		if (Lang_isEqual(newClusters, clusters)) {
 			break;
 		}
 		clusters = newClusters;
-		centroids = clusters.map((cluster, index) => (cluster.length > 0) ? mean(cluster.map(index => vectors[index])) : initialCentroids[index]);
+		centroids = clusters.map((cluster, index) =>
+			(cluster.length > 0)
+				? mean(cluster.map(index => vectors[index]))
+				: initialCentroids[index]
+		);
 	}
 	return clusters.map(cluster => cluster.map(index => values[index]));
 };
@@ -59,13 +65,19 @@ Object.assign(KMeans, {
 	map: Function_identity,
 
 	distanceBetween(vector, otherVector) {
-		return Math.sqrt(vector.reduce((squaredDistance, value, index) => squaredDistance + Math.pow(value - otherVector[index], 2), 0));
+		return Math.sqrt(vector.reduce((squaredDistance, value, index) =>
+			squaredDistance + Math.pow(value - otherVector[index], 2)
+		, 0));
 	},
 
 	mean(vectors) {
 		return vectors
-			.map(vector => vector.map(value => value / vectors.length))
-			.reduce((centroid, vector) => centroid.map((value, index) => value + vector[index]));
+			.map(vector =>
+				vector.map(value => value / vectors.length)
+			)
+			.reduce((centroid, vector) =>
+				centroid.map((value, index) => value + vector[index])
+			);
 	},
 });
 

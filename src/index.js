@@ -3,7 +3,7 @@ import Function_identity from '/utils/Function/identity';
 import Function_stubArray from '/utils/Function/stubArray';
 import Lang_isEqual from '/utils/Lang/isEqual';
 
-let KMeans = function(values, initialCentroids, options) {
+let KMeans = function(values, centroids, options) {
 	let {
 		maxIterations,
 		map,
@@ -14,30 +14,29 @@ let KMeans = function(values, initialCentroids, options) {
 		return [];
 	}
 	let vectors;
-	if (Array.isArray(initialCentroids)) {
-		if (initialCentroids.length < 1) {
+	if (Array.isArray(centroids)) {
+		if (centroids.length < 1) {
 			return [];
 		}
-		if (initialCentroids.length === 1) {
+		if (centroids.length === 1) {
 			return [values.slice()];
 		}
 		vectors = values.map(value => map(value));
-		initialCentroids = initialCentroids.map(value => map(value));
+		centroids = centroids.map(value => map(value));
 	} else {
-		if (initialCentroids < 1) {
+		if (centroids < 1) {
 			return [];
 		}
-		if (initialCentroids === 1) {
+		if (centroids === 1) {
 			return [values.slice()];
 		}
-		if (initialCentroids >= values.length) {
+		if (centroids >= values.length) {
 			return values.map(value => [value]);
 		}
 		vectors = values.map(value => map(value));
-		initialCentroids = vectors.slice(0, initialCentroids);
+		centroids = vectors.slice(0, centroids);
 	}
-	let centroids = initialCentroids;
-	let clusters = centroids.map(Function_stubArray);
+	let clusters = [];
 	for (let i = 0; i < maxIterations; i++) {
 		let newClusters = centroids.map(Function_stubArray);
 		vectors.forEach((vector, index) => {
@@ -46,14 +45,13 @@ let KMeans = function(values, initialCentroids, options) {
 			);
 			cluster.push(index);
 		});
+		newClusters = newClusters.filter(({length}) => length > 0);
 		if (Lang_isEqual(newClusters, clusters)) {
 			break;
 		}
 		clusters = newClusters;
-		centroids = clusters.map((cluster, index) =>
-			(cluster.length > 0)
-				? mean(cluster.map(index => vectors[index]))
-				: initialCentroids[index]
+		centroids = clusters.map(cluster =>
+			mean(cluster.map(index => vectors[index]))
 		);
 	}
 	return clusters.map(cluster => cluster.map(index => values[index]));

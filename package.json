@@ -1,6 +1,6 @@
 {
 	"name": "almete.kmeans",
-	"version": "18.10.15",
+	"version": "18.10.16",
 	"description": "Implementation of the basic k-means algorithm to partition vectors into clusters.",
 	"keywords": [
 		"algorithm",

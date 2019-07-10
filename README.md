@@ -1,6 +1,13 @@
-# almete.KMeans
+# KMeans
 
-`almete.KMeans(vectors, centroids, {map, distanceBetween, mean, maxIterations = 1024})`
+```
+KMeans(vectors, centroids, {
+  distanceBetween,
+  map,
+  maxIterations = 1024,
+  mean,
+})
+```
 
 Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition vectors into clusters.
 
@@ -12,46 +19,42 @@ Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-
 
 Returns clusters as an array of arrays.
 
-## dependencies
-
-*no dependencies*
-
 ## setup
 
 ### npm
 
 ```shell
-npm install almete.kmeans
+npm install @seregpie/kmeans
 ```
 
-### ES module
+### es6
 
 ```javascript
-import KMeans from 'almete.kmeans';
+import KMeans from '@seregpie/kmeans';
 ```
 
-### Node
+### node
 
 ```javascript
-let KMeans = require('almete.kmeans');
+let KMeans = require('@seregpie/kmeans');
 ```
 
 ### browser
 
 ```html
-<script src="https://unpkg.com/almete.kmeans"></script>
+<script src="https://unpkg.com/@seregpie/kmeans"></script>
 ```
 
-The function `KMeans` will be available under the namespace `almete`.
+The module is globally available as `KMeans`.
 
 ## usage
 
 ```javascript
 let vectorSize = 3, vectorsCount = 1000, clustersCount = 12;
 let vectors = Array.from({length: vectorsCount}, () => Array.from(({length: vectorSize}), () => Math.random()));
-let clusters = almete.KMeans(vectors, clustersCount);
+let clusters = KMeans(vectors, clustersCount);
 console.log(clusters.length === clustersCount); // => true
-console.log([].concat(...clusters).length === vectorsCount); // => true
+console.log(clusters.flat().length === vectorsCount); // => true
 ```
 
 ---
@@ -65,7 +68,7 @@ let vectors = [
   [7, 8, 7], [6, 5, 5], [8, 5, 8], [3, 8, 2], [0, 4, 9],
 ];
 let centroids = [[7, 0, 0], [0, 7, 0], [0, 0, 7]];
-let clusters = almete.KMeans(vectors, centroids);
+let clusters = KMeans(vectors, centroids);
 console.log(clusters[0]);
 // => [[6, 7, 9], [5, 2, 4], [7, 7, 0], [7, 6, 4], [8, 3, 4], [7, 8, 7], [6, 5, 5], [8, 5, 8]]
 console.log(clusters[1]);
@@ -96,12 +99,8 @@ let athletes = [
   new Athlete('G', 180, 71), new Athlete('H', 180, 70), new Athlete('I', 183, 84),
   new Athlete('J', 180, 88), new Athlete('K', 180, 67), new Athlete('L', 177, 76),
 ];
-let clusters = almete.KMeans(athletes, [athletes[0], athletes[1]], {
+let clusters = KMeans(athletes, [athletes[0], athletes[1]], {
   map: athlete => [athlete.height, athlete.weight],
 });
 // => [['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'], ['B', 'C']]
 ```
-
-## see also
-
-- [almete.NearestNeighborChain](https://github.com/SeregPie/almete.NearestNeighborChain)

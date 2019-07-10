@@ -1,6 +1,6 @@
 /*eslint no-console: 0*/
 
-let KMeans = require('./almete.KMeans');
+let KMeans = require('./index');
 
 {
 	let vectorSize = 3;
@@ -9,7 +9,7 @@ let KMeans = require('./almete.KMeans');
 	let vectors = Array.from({length: vectorsCount}, () => Array.from(({length: vectorSize}), () => Math.random()));
 	let clusters = KMeans(vectors, clustersCount);
 	console.log(clusters.length === clustersCount); // => true
-	console.log([].concat(...clusters).length === vectorsCount); // => true
+	console.log(clusters.flat().length === vectorsCount); // => true
 }
 {
 	let vectors = [

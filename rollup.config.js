@@ -1,20 +1,17 @@
+import {terser} from 'rollup-plugin-terser';
 import buble from 'rollup-plugin-buble';
-import minify from 'rollup-plugin-babel-minify';
-import path from 'path';
-import resolve from '@seregpie/rollup-plugin-resolve';
 
 import {main} from './package.json';
 
 export default {
 	input: 'src/index.js',
+	plugins: [
+		buble({objectAssign: 'Object.assign'}),
+		terser(),
+	],
 	output: {
 		file: main,
 		format: 'umd',
-		name: path.basename(main, path.extname(main)),
+		name: 'KMeans',
 	},
-	plugins: [
-		resolve(),
-		buble({objectAssign: 'Object.assign'}),
-		minify({comments: false}),
-	],
 };

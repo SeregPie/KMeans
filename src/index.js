@@ -1,7 +1,7 @@
-import Array_minBy from '/utils/Array/minBy';
-import Function_identity from '/utils/Function/identity';
-import Function_stubArray from '/utils/Function/stubArray';
-import Lang_isEqual from '/utils/Lang/isEqual';
+import Array_minBy from './utils/Array/minBy';
+import Function_identity from './utils/Function/identity';
+import Function_stubArray from './utils/Function/stubArray';
+import Lang_isEqual from './utils/Lang/isEqual';
 
 let KMeans = function(values, centroids, options) {
 	let {

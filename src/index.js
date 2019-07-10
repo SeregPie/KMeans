@@ -68,7 +68,7 @@ Object.assign(KMeans, {
 		, 0));
 	},
 
-	mean(vectors) {
+	centroid(vectors) {
 		return vectors
 			.map(vector =>
 				vector.map(value => value / vectors.length)

@@ -7,7 +7,7 @@ let KMeans = function(values, centroids, options) {
 	let {
 		maxIterations,
 		map,
-		distanceBetween,
+		distance,
 		mean,
 	} = {...KMeans, ...options};
 	if (values.length < 1) {
@@ -41,7 +41,7 @@ let KMeans = function(values, centroids, options) {
 		let newClusters = centroids.map(Function_stubArray);
 		vectors.forEach((vector, index) => {
 			let cluster = Array_minBy(newClusters, (cluster, index) =>
-				distanceBetween(vector, centroids[index])
+				distance(vector, centroids[index])
 			);
 			cluster.push(index);
 		});
@@ -62,7 +62,7 @@ Object.assign(KMeans, {
 
 	map: Function_identity,
 
-	distanceBetween(vector, otherVector) {
+	distance(vector, otherVector) {
 		return Math.sqrt(vector.reduce((squaredDistance, value, index) =>
 			squaredDistance + Math.pow(value - otherVector[index], 2)
 		, 0));

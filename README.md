@@ -2,7 +2,7 @@
 
 ```
 KMeans(vectors, centroids, {
-  distanceBetween,
+  distance,
   map,
   maxIterations = 1024,
   mean,

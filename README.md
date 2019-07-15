@@ -27,25 +27,25 @@ Returns clusters as an array of arrays.
 ### npm
 
 ```shell
-npm install @seregpie/kmeans
+npm install @seregpie/k-means
 ```
 
 ### es6
 
 ```javascript
-import KMeans from '@seregpie/kmeans';
+import KMeans from '@seregpie/k-means';
 ```
 
 ### node
 
 ```javascript
-let KMeans = require('@seregpie/kmeans');
+let KMeans = require('@seregpie/k-means');
 ```
 
 ### browser
 
 ```html
-<script src="https://unpkg.com/@seregpie/kmeans"></script>
+<script src="https://unpkg.com/@seregpie/k-means"></script>
 ```
 
 The module is globally available as `KMeans`.

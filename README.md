@@ -2,9 +2,9 @@
 
 ```
 KMeans(vectors, centroids, {
-  centroid,
-  distance,
-  map,
+  centroid = function(vectors) { /* code */ },
+  distance = function(vector, otherVector) { /* code */ },
+  map = function(value) { /* code */ },
   maxIterations = 1024,
 })
 ```
@@ -13,9 +13,12 @@ Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-
 
 | argument | description |
 | ---: | :--- |
-| `vectors` | An array of vectors to be clustered. |
-| `centroids` | Initial centroids for each cluster. The value can be an array of vectors or a number to take from the given values. |
-| `maxIterations` | The maximum number of iterations before the algorithm terminates. |
+| `vectors` | An iterable of vectors to be clustered. |
+| `centroids` | Initial centroids for each cluster. The value can be either an iterable of vectors or a number of clusters. |
+| `maxIterations` | The maximum number of iterations until convergence. |
+| `centroid` | A function to calculate the centroid from vectors. |
+| `distance` | A function to calculate the distance between two vectors. |
+| `map` | A function to map values. |
 
 Returns clusters as an array of arrays.
 
@@ -92,15 +95,16 @@ let Athlete = class {
     return this.name;
   }
 };
-
 let athletes = [
   new Athlete('A', 185, 72), new Athlete('B', 170, 56), new Athlete('C', 168, 60),
   new Athlete('D', 179, 68), new Athlete('E', 182, 72), new Athlete('F', 188, 77),
   new Athlete('G', 180, 71), new Athlete('H', 180, 70), new Athlete('I', 183, 84),
   new Athlete('J', 180, 88), new Athlete('K', 180, 67), new Athlete('L', 177, 76),
 ];
-let clusters = KMeans(athletes, [athletes[0], athletes[1]], {
-  map: athlete => [athlete.height, athlete.weight],
+let meanHeight = athletes.map(({height}) => height).reduce((r, n) => r + n) / athletes.length;
+let meanWeight = athletes.map(({weight}) => weight).reduce((r, n) => r + n) / athletes.length;
+let clusteredAthletes = KMeans(athletes, [athletes[0], athletes[3]], {
+  map: athlete => [athlete.height / meanHeight, athlete.weight / meanWeight],
 });
-// => [['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'], ['B', 'C']]
+// => [['A', 'E', 'F', 'G', 'I', 'J', 'L'], ['B', 'C', 'D', 'H', 'K']]
 ```

@@ -22,11 +22,14 @@ let KMeans = require('./index');
 	];
 	let centroids = [[7, 0, 0], [0, 7, 0], [0, 0, 7]];
 	let clusters = KMeans(vectors, centroids);
-	assert.deepStrictEqual(clusters, [
-		[[6, 7, 9], [5, 2, 4], [7, 7, 0], [7, 6, 4], [8, 3, 4], [7, 8, 7], [6, 5, 5], [8, 5, 8]],
-		[[0, 9, 2], [3, 8, 2]],
-		[[0, 1, 6], [0, 4, 8], [2, 3, 5], [0, 3, 6], [0, 4, 9]],
-	]);
+	assert.deepStrictEqual(
+		clusters,
+		[
+			[[6, 7, 9], [5, 2, 4], [7, 7, 0], [7, 6, 4], [8, 3, 4], [7, 8, 7], [6, 5, 5], [8, 5, 8]],
+			[[0, 9, 2], [3, 8, 2]],
+			[[0, 1, 6], [0, 4, 8], [2, 3, 5], [0, 3, 6], [0, 4, 9]],
+		],
+	);
 }
 
 {
@@ -39,22 +42,18 @@ let KMeans = require('./index');
 	assert.strictEqual(clusters.flat().length, vectorsCount);
 }
 
-assert.deepStrictEqual(KMeans([], 3), []);
+assert.deepStrictEqual(KMeans([], 3), [[], [], []]);
+
+assert.deepStrictEqual(KMeans([[1], [2], [3]], 0), []);
 
 {
 	let vectors = [[1], [2], [3]];
-	assert.deepStrictEqual(KMeans(vectors, vectors.length), vectors.map(vector => [vector]));
+	assert.deepStrictEqual(KMeans(vectors, 1), [vectors]);
 }
 
-{
-	let vectors = [[1], [2], [3]];
-	assert.deepStrictEqual(KMeans(vectors, vectors.length + 3), vectors.map(vector => [vector]));
-}
+assert.deepStrictEqual(KMeans([[1], [1], [2]], 2), [[[2]], [[1], [1]]]);
 
-{
-	let vectors = [[1], [2], [3]];
-	assert.deepStrictEqual(KMeans(vectors, 0), []);
-}
+assert.deepStrictEqual(KMeans([[1]], 2), [[[1]], []]);
 
 {
 	let Athlete = class {
@@ -68,24 +67,21 @@ assert.deepStrictEqual(KMeans([], 3), []);
 		}
 	};
 	let athletes = [
-		new Athlete('A', 185, 72),
-		new Athlete('B', 170, 56),
-		new Athlete('C', 168, 60),
-		new Athlete('D', 179, 68),
-		new Athlete('E', 182, 72),
-		new Athlete('F', 188, 77),
-		new Athlete('G', 180, 71),
-		new Athlete('H', 180, 70),
-		new Athlete('I', 183, 84),
-		new Athlete('J', 180, 88),
-		new Athlete('K', 180, 67),
-		new Athlete('L', 177, 76),
+		new Athlete('A', 185, 72), new Athlete('B', 170, 56), new Athlete('C', 168, 60),
+		new Athlete('D', 179, 68), new Athlete('E', 182, 72), new Athlete('F', 188, 77),
+		new Athlete('G', 180, 71), new Athlete('H', 180, 70), new Athlete('I', 183, 84),
+		new Athlete('J', 180, 88), new Athlete('K', 180, 67), new Athlete('L', 177, 76),
 	];
-	let clusters = KMeans(athletes, [athletes[0], athletes[1]], {
-		map: athlete => [athlete.height, athlete.weight],
+	let meanHeight = athletes.map(({height}) => height).reduce((r, n) => r + n) / athletes.length;
+	let meanWeight = athletes.map(({weight}) => weight).reduce((r, n) => r + n) / athletes.length;
+	let clusteredAthletes = KMeans(athletes, [athletes[0], athletes[3]], {
+		map: athlete => [athlete.height / meanHeight, athlete.weight / meanWeight],
 	});
-	assert.deepStrictEqual(JSON.parse(JSON.stringify(clusters)), [
-		['A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
-		['B', 'C'],
-	]);
+	assert.deepStrictEqual(
+		JSON.parse(JSON.stringify(clusteredAthletes)),
+		[
+			['A', 'E', 'F', 'G', 'I', 'J', 'L'],
+			['B', 'C', 'D', 'H', 'K'],
+		],
+	);
 }

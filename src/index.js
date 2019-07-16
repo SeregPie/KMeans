@@ -5,54 +5,54 @@ import Function_identity from './utils/Function/identity';
 import Function_stubArray from './utils/Function/stubArray';
 import Number_isNumber from './utils/Number/isNumber';
 
-let KMeans = function(values, centroids, {
-	centroid: getCentroid = KMeans.centroid,
-	distance: getDistance  = KMeans.distance,
+let KMeans = function(originalValues, means, {
+	distance: calculateDistance = KMeans.distance,
 	map = KMeans.map,
 	maxIterations = KMeans.maxIterations,
+	mean: calculateMean = KMeans.mean,
 } = {}) {
-	values = Array.from(values);
-	let vectors;
+	originalValues = Array.from(originalValues);
+	let values;
 	let clusters;
-	if (Number_isNumber(centroids)) {
-		if (!centroids) {
+	if (Number_isNumber(means)) {
+		if (!means) {
 			return [];
 		}
-		if (centroids === 1) {
-			return [[...values]];
+		if (means === 1) {
+			return [[...originalValues]];
 		}
-		vectors = values.map(value => map(value));
-		clusters = Array_make(centroids, Function_stubArray);
-		centroids = vectors.slice(0, centroids);
+		values = originalValues.map(value => map(value));
+		clusters = Array_make(means, Function_stubArray);
+		means = values.slice(0, means);
 	} else {
-		centroids = Array.from(centroids);
-		if (!centroids.length) {
+		means = Array.from(means);
+		if (!means.length) {
 			return [];
 		}
-		if (centroids.length === 1) {
-			return [[...values]];
+		if (means.length === 1) {
+			return [[...originalValues]];
 		}
-		vectors = values.map(value => map(value));
-		clusters = centroids.map(Function_stubArray);
-		centroids = centroids.map(value => map(value));
+		values = originalValues.map(value => map(value));
+		clusters = means.map(Function_stubArray);
+		means = means.map(value => map(value));
 	}
 	let labels = [];
 	for (let i = 0; i < maxIterations; i++) {
-		labels.forEach((clusterIndex, vectorIndex) => {
-			clusters[clusterIndex].push(vectors[vectorIndex]);
+		labels.forEach((clusterIndex, valueIndex) => {
+			clusters[clusterIndex].push(values[valueIndex]);
 		});
-		centroids = centroids.map((centroid, clusterIndex) => {
-			let vectors = clusters[clusterIndex];
-			if (vectors.length) {
-				centroid = getCentroid(vectors);
+		means = means.map((mean, clusterIndex) => {
+			let values = clusters[clusterIndex];
+			if (values.length) {
+				mean = calculateMean(values);
 			}
-			return centroid;
+			return mean;
 		});
 		let converged = true;
-		vectors.forEach((vector, vectorIndex) => {
-			let clusterIndex = Array_indexOfMin(centroids, centroid => getDistance(vector, centroid));
-			if (clusterIndex !== labels[vectorIndex]) {
-				labels[vectorIndex] = clusterIndex;
+		values.forEach((value, valueIndex) => {
+			let clusterIndex = Array_indexOfMin(means, mean => calculateDistance(value, mean));
+			if (clusterIndex !== labels[valueIndex]) {
+				labels[valueIndex] = clusterIndex;
 				converged = false;
 			}
 		});
@@ -62,23 +62,23 @@ let KMeans = function(values, centroids, {
 		}
 	}
 	labels.forEach((clusterIndex, valueIndex) => {
-		clusters[clusterIndex].push(values[valueIndex]);
+		clusters[clusterIndex].push(originalValues[valueIndex]);
 	});
 	return clusters;
 };
 
 Object.assign(KMeans, {
-	centroid(vectors) {
-		return vectors[0].map((n, i) => Array_mean(vectors.map(vector => vector[i])));
-	},
-
-	distance(vector, otherVector) {
-		return Math.hypot(...vector.map((n, i) => n - otherVector[i]));
+	distance(value, otherValue) {
+		return Math.hypot(...value.map((n, i) => n - otherValue[i]));
 	},
 
 	map: Function_identity,
 
 	maxIterations: 1024,
+
+	mean(values) {
+		return values[0].map((n, i) => Array_mean(values.map(value => value[i])));
+	},
 });
 
 export default KMeans;

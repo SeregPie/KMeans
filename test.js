@@ -74,11 +74,11 @@ assert.deepStrictEqual(KMeans([[1]], 2), [[[1]], []]);
 	];
 	let meanHeight = athletes.map(({height}) => height).reduce((r, n) => r + n) / athletes.length;
 	let meanWeight = athletes.map(({weight}) => weight).reduce((r, n) => r + n) / athletes.length;
-	let clusteredAthletes = KMeans(athletes, [athletes[0], athletes[3]], {
+	let clusters = KMeans(athletes, [athletes[0], athletes[3]], {
 		map: athlete => [athlete.height / meanHeight, athlete.weight / meanWeight],
 	});
 	assert.deepStrictEqual(
-		JSON.parse(JSON.stringify(clusteredAthletes)),
+		JSON.parse(JSON.stringify(clusters)),
 		[
 			['A', 'E', 'F', 'G', 'I', 'J', 'L'],
 			['B', 'C', 'D', 'H', 'K'],

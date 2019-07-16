@@ -1,24 +1,24 @@
 # KMeans
 
 ```
-KMeans(vectors, centroids, {
-  centroid = function(vectors) { /* code */ },
-  distance = function(vector, otherVector) { /* code */ },
-  map = function(value) { /* code */ },
+KMeans(values, means, {
+  distance = function(value, otherValue) { /* euclidean distance */ },
+  map = function(value) { /* identity */ },
   maxIterations = 1024,
+  mean = function(values) { /* centroid */ },
 })
 ```
 
-Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition vectors into clusters.
+Implementation of the basic [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) to partition values into clusters.
 
 | argument | description |
 | ---: | :--- |
-| `vectors` | An iterable of vectors to be clustered. |
-| `centroids` | Initial centroids for each cluster. The value can be either an iterable of vectors or a number of clusters. |
-| `maxIterations` | The maximum number of iterations until convergence. |
-| `centroid` | A function to calculate the centroid from vectors. |
-| `distance` | A function to calculate the distance between two vectors. |
+| `values` | An iterable of values to be clustered. |
+| `means` | Either an iterable of initial means or a number of clusters. |
+| `distance` | A function to calculate the distance between two values. |
 | `map` | A function to map values. |
+| `maxIterations` | The maximum number of iterations until convergence. |
+| `mean` | A function to calculate the mean value. |
 
 Returns clusters as an array of arrays.
 

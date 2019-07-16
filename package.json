@@ -1,7 +1,7 @@
 {
 	"name": "@seregpie/k-means",
-	"version": "1.0.0",
-	"description": "Implementation of the basic k-means algorithm to partition vectors into clusters.",
+	"version": "1.0.1",
+	"description": "Implementation of the basic k-means algorithm to partition values into clusters.",
 	"keywords": [
 		"algorithm",
 		"array",
@@ -11,8 +11,6 @@
 		"iteration",
 		"k-means",
 		"mean",
-		"method",
-		"technique",
 		"vector"
 	],
 	"license": "MIT",
@@ -26,7 +24,7 @@
 		"test": "node test"
 	},
 	"devDependencies": {
-		"rollup": "^1.16.7",
+		"rollup": "^1.17.0",
 		"rollup-plugin-buble": "^0.19.8",
 		"rollup-plugin-terser": "^5.1.1"
 	}

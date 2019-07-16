@@ -6,7 +6,7 @@ import {main} from './package.json';
 export default {
 	input: 'src/index.js',
 	plugins: [
-		buble({objectAssign: 'Object.assign'}),
+		buble(),
 		terser(),
 	],
 	output: {

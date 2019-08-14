@@ -22,7 +22,7 @@ Implementation of the [k-means algorithm](https://en.wikipedia.org/wiki/k-means)
 | `mean` | A function to calculate the mean value. |
 | `random` | A function as the pseudo-random number generator. |
 
-Returns clusters as an array of arrays.
+Returns the clustered values as an array of arrays.
 
 ## dependencies
 
@@ -51,6 +51,7 @@ let KMeans = require('@seregpie/k-means');
 ### browser
 
 ```html
+<script src="https://unpkg.com/just-my-luck"></script>
 <script src="https://unpkg.com/@seregpie/k-means"></script>
 ```
 

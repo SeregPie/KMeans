@@ -4,13 +4,10 @@
 	"description": "Implementation of the k-means algorithm to partition values into clusters.",
 	"keywords": [
 		"algorithm",
-		"array",
-		"average",
 		"centroid",
 		"cluster",
 		"distance",
-		"iteration",
-		"k-means",
+		"k-means++",
 		"mean",
 		"vector"
 	],

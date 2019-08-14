@@ -14,10 +14,10 @@ Implementation of the [k-means algorithm](https://en.wikipedia.org/wiki/k-means)
 
 | argument | description |
 | ---: | :--- |
-| `values` | An iterable of values to be clustered. |
-| `means` | Either an iterable of initial means or a number of clusters. |
+| `values` | An iterable of the values to be clustered. |
+| `means` | Either an iterable of initial means or the number of clusters. |
 | `distance` | A function to calculate the distance between two values. |
-| `map` | A function to map values. |
+| `map` | A function to map the values. |
 | `maxIterations` | The maximum number of iterations until convergence. |
 | `mean` | A function to calculate the mean value. |
 | `random` | A function as the pseudo-random number generator. |
@@ -59,36 +59,28 @@ The module is globally available as `KMeans`.
 
 ## usage
 
+Let the initial centroids be chosen randomly.
+
 ```javascript
-let vectorSize = 3, vectorsCount = 1000, clustersCount = 12;
-let vectors = Array.from({length: vectorsCount}, () => Array.from(({length: vectorSize}), () => Math.random()));
-let clusters = KMeans(vectors, clustersCount);
-console.log(clusters.length === clustersCount); // => true
-console.log(clusters.flat().length === vectorsCount); // => true
+let vectors = [[1, 4], [6, 2], [0, 4], [1, 3], [5, 1], [4, 0]];
+let clusters = KMeans(vectors, 3);
+// => [[[1, 4], [0, 4]], [[6, 2], [5, 1], [4, 0]], [[1, 3]]]
 ```
 
 ---
 
-Initialize centroids where to start the algorithm.
+Provide the initial centroids.
 
 ```javascript
-let vectors = [
-  [6, 7, 9], [0, 1, 6], [5, 2, 4], [7, 7, 0], [0, 4, 8],
-  [0, 9, 2], [2, 3, 5], [0, 3, 6], [7, 6, 4], [8, 3, 4],
-  [7, 8, 7], [6, 5, 5], [8, 5, 8], [3, 8, 2], [0, 4, 9],
-];
-let centroids = [[7, 0, 0], [0, 7, 0], [0, 0, 7]];
+let vectors = [[1, 4], [6, 2], [0, 4], [1, 3], [5, 1], [4, 0]];
+let centroids = [[0, 7], [7, 0]];
 let clusters = KMeans(vectors, centroids);
-/* => [
-  [[6, 7, 9], [5, 2, 4], [7, 7, 0], [7, 6, 4], [8, 3, 4], [7, 8, 7], [6, 5, 5], [8, 5, 8]],
-  [[0, 9, 2], [3, 8, 2]],
-  [[0, 1, 6], [0, 4, 8], [2, 3, 5], [0, 3, 6], [0, 4, 9]],
-]*/
+// => [[[1, 4], [0, 4], [1, 3]], [[6, 2], [5, 1], [4, 0]]]
 ```
 
 ---
 
-You can use any values instead of vectors. In this case you must provide a function to convert a value to a vector.
+Provide a `map` function to convert a value to a vector.
 
 ```javascript
 let Athlete = class {
@@ -102,15 +94,14 @@ let Athlete = class {
   }
 };
 let athletes = [
-  new Athlete('A', 185, 72), new Athlete('B', 170, 56), new Athlete('C', 168, 60),
+  new Athlete('A', 185, 72), new Athlete('B', 183, 84), new Athlete('C', 168, 60),
   new Athlete('D', 179, 68), new Athlete('E', 182, 72), new Athlete('F', 188, 77),
-  new Athlete('G', 180, 71), new Athlete('H', 180, 70), new Athlete('I', 183, 84),
+  new Athlete('G', 180, 71), new Athlete('H', 180, 70), new Athlete('I', 170, 56),
   new Athlete('J', 180, 88), new Athlete('K', 180, 67), new Athlete('L', 177, 76),
 ];
-let meanHeight = athletes.map(({height}) => height).reduce((r, n, i, {length}) => (r + n) / length, 0);
-let meanWeight = athletes.map(({weight}) => weight).reduce((r, n, i, {length}) => (r + n) / length, 0);
-let clusteredAthletes = KMeans(athletes, [athletes[0], athletes[3]], {
-  map: athlete => [athlete.height / meanHeight, athlete.weight / meanWeight],
+let clusteredAthletes = KMeansPlusPlus(athletes, [athletes[0], athletes[1]], {
+  map: athlete => [athlete.weight / athlete.height],
 });
-// => [['A', 'E', 'F', 'G', 'I', 'J', 'L'], ['B', 'C', 'D', 'H', 'K']]
+console.log(JSON.parse(JSON.stringify(clusteredAthletes)));
+// => [['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K'], ['B', 'J', 'L']]
 ```

@@ -3,7 +3,12 @@ import buble from 'rollup-plugin-buble';
 
 import {main} from './package.json';
 
+let globals = {
+	'just-my-luck': 'JustMyLuck',
+};
+
 export default {
+	external: Object.keys(globals),
 	input: 'src/index.js',
 	plugins: [
 		buble(),
@@ -13,5 +18,6 @@ export default {
 		file: main,
 		format: 'umd',
 		name: 'KMeans',
+		globals,
 	},
 };

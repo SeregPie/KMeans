@@ -1,70 +1,73 @@
+import JustMyLuck from 'just-my-luck';
+
 import Array_indexOfMin from './utils/Array/indexOfMin';
 import Array_make from './utils/Array/make';
 import Array_mean from './utils/Array/mean';
 import Function_identity from './utils/Function/identity';
 import Function_stubArray from './utils/Function/stubArray';
-import Number_isNumber from './utils/Number/isNumber';
 
-let KMeans = function(originalValues, means, {
+let KMeans = function(rawValues, rawMeans, {
 	distance: calculateDistance = KMeans.distance,
 	map = KMeans.map,
 	maxIterations = KMeans.maxIterations,
 	mean: calculateMean = KMeans.mean,
+	random = KMeans.random,
 } = {}) {
-	originalValues = Array.from(originalValues);
-	let values;
-	let clusters;
-	if (Number_isNumber(means)) {
-		if (!means) {
-			return [];
-		}
-		if (means === 1) {
-			return [[...originalValues]];
-		}
-		values = originalValues.map(value => map(value));
-		clusters = Array_make(means, Function_stubArray);
-		means = values.slice(0, means);
+	let b = Number.isFinite(rawMeans);
+	let clustersCount;
+	if (b) {
+		clustersCount = rawMeans;
 	} else {
-		means = Array.from(means);
-		if (!means.length) {
-			return [];
-		}
-		if (means.length === 1) {
-			return [[...originalValues]];
-		}
-		values = originalValues.map(value => map(value));
-		clusters = means.map(Function_stubArray);
-		means = means.map(value => map(value));
+		rawMeans = Array.from(rawMeans);
+		clustersCount = rawMeans.length;
 	}
-	let labels = [];
+	if (!clustersCount) {
+		return [];
+	}
+	rawValues = Array.from(rawValues);
+	if (clustersCount === 1) {
+		return [rawValues];
+	}
+	let myLuck = new JustMyLuck(random);
+	let values = rawValues.map(map);
+	let means;
+	if (b) {
+		means = myLuck.items(values, clustersCount);
+	} else {
+		means = rawMeans.map(map);
+	}
+	let assignments = [];
 	for (let i = 0; i < maxIterations; i++) {
-		labels.forEach((clusterIndex, valueIndex) => {
-			clusters[clusterIndex].push(values[valueIndex]);
-		});
-		means = means.map((mean, clusterIndex) => {
-			let values = clusters[clusterIndex];
-			if (values.length) {
-				mean = calculateMean(values);
-			}
-			return mean;
-		});
 		let converged = true;
 		values.forEach((value, valueIndex) => {
 			let clusterIndex = Array_indexOfMin(means, mean => calculateDistance(value, mean));
-			if (clusterIndex !== labels[valueIndex]) {
-				labels[valueIndex] = clusterIndex;
+			if (clusterIndex !== assignments[valueIndex]) {
+				assignments[valueIndex] = clusterIndex;
 				converged = false;
 			}
 		});
-		clusters = clusters.map(Function_stubArray);
 		if (converged) {
 			break;
 		}
+		let clusters = Array_make(clustersCount, Function_stubArray);
+		assignments.forEach((clusterIndex, valueIndex) => {
+			clusters[clusterIndex].push(values[valueIndex]);
+		});
+		means = means.map((mean, clusterIndex) => {
+			let cluster = clusters[clusterIndex];
+			if (cluster.length) {
+				mean = calculateMean(cluster);
+			} else {
+				// handle empty cluster
+			}
+			return mean;
+		});
 	}
-	labels.forEach((clusterIndex, valueIndex) => {
-		clusters[clusterIndex].push(originalValues[valueIndex]);
+	let rawClusters = Array_make(clustersCount, Function_stubArray);
+	assignments.forEach((clusterIndex, valueIndex) => {
+		rawClusters[clusterIndex].push(rawValues[valueIndex]);
 	});
-	return clusters;
+	return rawClusters;
 };
 
 Object.assign(KMeans, {
@@ -79,6 +82,8 @@ Object.assign(KMeans, {
 	mean(values) {
 		return values[0].map((n, i) => Array_mean(values.map(value => value[i])));
 	},
+
+	random: Math.random,
 });
 
 export default KMeans;

@@ -1,12 +1,13 @@
-export default function(array, iteratee) {
-	let index = 0;
-	let minIterateeValue = iteratee(array[index]);
-	for (let i = 1, ii = array.length; i < ii; i++) {
-		let iterateeValue = iteratee(array[i]);
-		if (iterateeValue < minIterateeValue) {
-			minIterateeValue = iterateeValue;
-			index = i;
+import Function_identity from '../Function/identity';
+
+export default function(array, iteratee = Function_identity) {
+	let returns = 0;
+	array.map(iteratee).reduce((r, n, i) => {
+		if (n < r) {
+			r = n;
+			returns = i;
 		}
-	}
-	return index;
+		return r;
+	});
+	return returns;
 }

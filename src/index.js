@@ -2,16 +2,16 @@ import JustMyLuck from 'just-my-luck';
 
 import Array_indexOfMin from './utils/Array/indexOfMin';
 import Array_make from './utils/Array/make';
-import Array_mean from './utils/Array/mean';
-import Function_identity from './utils/Function/identity';
 import Function_stubArray from './utils/Function/stubArray';
 
-let KMeans = function(rawValues, rawMeans, {
-	distance: calculateDistance = KMeans.distance,
-	map = KMeans.map,
-	maxIterations = KMeans.maxIterations,
-	mean: calculateMean = KMeans.mean,
-	random = KMeans.random,
+import defaultOptions from './defaultOptions';
+
+export default Object.assign(function(rawValues, rawMeans, {
+	distance: calculateDistance = defaultOptions.distance,
+	map = defaultOptions.map,
+	maxIterations = defaultOptions.maxIterations,
+	mean: calculateMean = defaultOptions.mean,
+	random = defaultOptions.random,
 } = {}) {
 	let b = Number.isFinite(rawMeans);
 	let clustersCount;
@@ -68,22 +68,4 @@ let KMeans = function(rawValues, rawMeans, {
 		rawClusters[clusterIndex].push(rawValues[valueIndex]);
 	});
 	return rawClusters;
-};
-
-Object.assign(KMeans, {
-	distance(value, otherValue) {
-		return Math.hypot(...value.map((n, i) => n - otherValue[i]));
-	},
-
-	map: Function_identity,
-
-	maxIterations: 1024,
-
-	mean(values) {
-		return values[0].map((n, i) => Array_mean(values.map(value => value[i])));
-	},
-
-	random: Math.random,
-});
-
-export default KMeans;
+}, defaultOptions);

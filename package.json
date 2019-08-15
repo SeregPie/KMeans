@@ -7,7 +7,7 @@
 		"centroid",
 		"cluster",
 		"distance",
-		"k-means++",
+		"k-means",
 		"mean",
 		"vector"
 	],

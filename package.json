@@ -21,12 +21,13 @@
 		"prepublishOnly": "npm run build",
 		"test": "node test"
 	},
-	"devDependencies": {
-		"rollup": "^1.19.4",
-		"rollup-plugin-buble": "^0.19.8",
-		"rollup-plugin-terser": "^5.1.1"
-	},
 	"dependencies": {
-		"just-my-luck": "^1.0.0"
+		"@seregpie/vector-math": "^1.2.0",
+		"just-my-luck": "^2.0.0"
+	},
+	"devDependencies": {
+		"@rollup/plugin-buble": "^0.21.1",
+		"rollup": "^2.0.3",
+		"rollup-plugin-terser": "^5.3.0"
 	}
 }

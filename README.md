@@ -5,20 +5,20 @@ KMeans(values, means, {
   distance(value, otherValue) { /* euclidean distance */ },
   map(value) { /* identity */ },
   maxIterations: 1024,
-  mean(values) { /* centroid */ },
+  mean(...values) { /* centroid */ },
   random: Math.random,
 })
 ```
 
-Implementation of the [k-means algorithm](https://en.wikipedia.org/wiki/k-means) to partition values into clusters.
+Implementation of the [k-means algorithm](https://en.wikipedia.org/wiki/k-means) to partition the values into the clusters.
 
 | argument | description |
 | ---: | :--- |
 | `values` | An iterable of the values to be clustered. |
-| `means` | Either an iterable of initial means or the number of clusters. |
+| `means` | Either an iterable of the initial means or the number of the clusters. |
 | `distance` | A function to calculate the distance between two values. |
 | `map` | A function to map the values. |
-| `maxIterations` | The maximum number of iterations until convergence. |
+| `maxIterations` | The maximum number of iterations until the convergence. |
 | `mean` | A function to calculate the mean value. |
 | `random` | A function as the pseudo-random number generator. |
 
@@ -27,6 +27,7 @@ Returns the clustered values as an array of arrays.
 ## dependencies
 
 - [JustMyLuck](https://github.com/SeregPie/JustMyLuck)
+- [VectorMath](https://github.com/SeregPie/VectorMath)
 
 ## setup
 
@@ -36,13 +37,13 @@ Returns the clustered values as an array of arrays.
 npm install @seregpie/k-means
 ```
 
-### es6
+### ES module
 
 ```javascript
 import KMeans from '@seregpie/k-means';
 ```
 
-### node
+### Node
 
 ```javascript
 let KMeans = require('@seregpie/k-means');
@@ -52,6 +53,7 @@ let KMeans = require('@seregpie/k-means');
 
 ```html
 <script src="https://unpkg.com/just-my-luck"></script>
+<script src="https://unpkg.com/@seregpie/vector-math"></script>
 <script src="https://unpkg.com/@seregpie/k-means"></script>
 ```
 
@@ -59,7 +61,7 @@ The module is globally available as `KMeans`.
 
 ## usage
 
-Let the initial centroids be chosen randomly.
+Let the initial means be chosen randomly.
 
 ```javascript
 let vectors = [[1, 4], [6, 2], [0, 4], [1, 3], [5, 1], [4, 0]];
@@ -69,7 +71,7 @@ let clusters = KMeans(vectors, 3);
 
 ---
 
-Provide the initial centroids.
+Provide the initial means.
 
 ```javascript
 let vectors = [[1, 4], [6, 2], [0, 4], [1, 3], [5, 1], [4, 0]];

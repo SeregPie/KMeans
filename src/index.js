@@ -32,7 +32,7 @@ let f = Object.assign(function(rawValues, rawMeans, {
 	let values = rawValues.map(map);
 	let means;
 	if (b) {
-		means = luck.combination(values, clustersCount);
+		means = luck.pickCombination(values, clustersCount);
 	} else {
 		means = rawMeans.map(map);
 	}

@@ -4,7 +4,6 @@ import VectorMath from '@seregpie/vector-math';
 import Array_ofLength from './core/Array/ofLength';
 import Array_prototype_indexOfMin from './core/Array/prototype/indexOfMin';
 import Function_identity from './core/Function/identity';
-import Function_stubArray from './core/Function/stubArray';
 
 let f = Object.assign(function(rawValues, rawMeans, {
 	distance: calculateDistance = f.distance,
@@ -49,7 +48,7 @@ let f = Object.assign(function(rawValues, rawMeans, {
 		if (converged) {
 			break;
 		}
-		let clusters = Array_ofLength(clustersCount).map(Function_stubArray);
+		let clusters = Array_ofLength(clustersCount).map(() => []);
 		assignments.forEach((clusterIndex, valueIndex) => {
 			clusters[clusterIndex].push(values[valueIndex]);
 		});
@@ -63,7 +62,7 @@ let f = Object.assign(function(rawValues, rawMeans, {
 			return mean;
 		});
 	}
-	let rawClusters = Array_ofLength(clustersCount).map(Function_stubArray);
+	let rawClusters = Array_ofLength(clustersCount).map(() => []);
 	assignments.forEach((clusterIndex, valueIndex) => {
 		rawClusters[clusterIndex].push(rawValues[valueIndex]);
 	});

@@ -1,6 +1,6 @@
 {
 	"name": "@seregpie/k-means",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Implementation of the k-means algorithm to partition the values into the clusters.",
 	"keywords": [
 		"algorithm",

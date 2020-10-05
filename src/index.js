@@ -1,9 +1,9 @@
 import JustMyLuck from 'just-my-luck';
 import VectorMath from '@seregpie/vector-math';
 
-import Array_ofLength from './core/Array/ofLength';
-import Array_prototype_indexOfMin from './core/Array/prototype/indexOfMin';
-import Function_identity from './core/Function/identity';
+import Array_ofLength from './@core/Array/ofLength';
+import Array_prototype_indexOfMin from './@core/Array/prototype/indexOfMin';
+import Function_identity from './@core/Function/identity';
 
 let f = Object.assign(function(rawValues, rawMeans, {
 	distance: calculateDistance = f.distance,

@@ -37,13 +37,17 @@ Returns the clustered values as an array of arrays.
 npm install @seregpie/k-means
 ```
 
-### ES module
+---
+
+Import inside an ES module.
 
 ```javascript
 import KMeans from '@seregpie/k-means';
 ```
 
-### Node
+*or*
+
+Import inside a CommonJS module.
 
 ```javascript
 let KMeans = require('@seregpie/k-means');
